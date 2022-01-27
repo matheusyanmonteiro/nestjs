@@ -1,5 +1,8 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { IUser } from './Contracts/IUser';
+import { ApiBody } from '@nestjs/swagger';
+import { UserEntity } from './database/UserEntity';
+
+import { UserDto } from './dtos/user.dto';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -7,12 +10,13 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  index(): IUser[] {
-    return this.usersService.findAll();
+  async index(): Promise<UserEntity[]> {
+    return await this.usersService.findAll();
   }
 
   @Post()
-  create(@Body() user: IUser): IUser {
-    return this.usersService.create(user);
+  @ApiBody({ type: UserDto })
+  async create(@Body() user: UserDto): Promise<UserEntity> {
+    return await this.usersService.create(user);
   }
 }
