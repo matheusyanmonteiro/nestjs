@@ -5,6 +5,10 @@ import { IUser } from './Contracts/IUser';
 export class UsersService {
   private users: IUser[] = [];
 
+  findAll(): IUser[] {
+    return this.users;
+  }
+
   create(user: IUser): IUser {
     this.users.push(user);
     return user;
